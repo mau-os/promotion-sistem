@@ -14,4 +14,7 @@
     <dt>Desconto <small>em porcentagem</small></dt>
     <dd><%= number_to_percentage promotion.discount_rate, separator: ',', precision: 2 %></dd>
   </dl>
+  <%= link_to 'Editar', edit_promotion_path(promotion) %>
+  <%= link_to 'Deletar', promotion_path(promotion), method: :delete,
+      data: { confirm: 'Quer apagar esta promoção?'} %>
 <% end %>

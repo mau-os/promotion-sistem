@@ -8,11 +8,11 @@
   <dt>Desconto <small>em porcentagem</small></dt>
   <dd><%= number_to_percentage @promotion.discount_rate, separator: ',', precision: 2 %></dd>
   <dt>Código</dt>
-  <dd> <%= @promotion.code %> </dd>
+  <dd><%= @promotion.code %></dd>
   <dt>Data de término</dt>
-  <dd> <%= @promotion.expiration_date.strftime '%d/%m/%Y' %> </dd>
+  <dd><%= @promotion.expiration_date.strftime '%d/%m/%Y' %></dd>
   <dt>Quantidade de cupons</dt>
-  <dd> <%= @promotion.coupon_quantity %> </dd>
+  <dd><%= @promotion.coupon_quantity %></dd>
 </dl>
 
 <% if @promotion.coupons.empty? %>

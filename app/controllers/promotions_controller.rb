@@ -20,6 +20,23 @@ class PromotionsController < ApplicationController
     end
   end
 
+  def edit
+    @promotion = Promotion.find(params[:id])
+    @generated_coupons = @promotion.coupons.any?
+  end
+
+  def update
+    @promotion = Promotion.find(params[:id])
+    @promotion.update(promotion_params)
+    redirect_to root_path
+  end
+
+  def destroy
+    @promotion = Promotion.find(params[:id])
+    @promotion.destroy
+    redirect_to promotions_path
+  end
+
   def generate_coupons
     @promotion = Promotion.find(params[:id])
 

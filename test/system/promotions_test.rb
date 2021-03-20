@@ -137,4 +137,62 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'NATAL10-0100'
     assert_no_text 'NATAL10-0101'
   end
+
+  test 'edit a promotion' do
+    promotion = Promotion.create!(name: 'Natal',
+                                  description: 'Promoção de Natal',
+                                  code: 'NATAL10',
+                                  discount_rate: 10,
+                                  coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
+    visit promotions_path
+    click_on 'Editar'
+
+    fill_in 'Nome', with: 'Ano Novo'
+    fill_in 'Descrição', with: 'Promoção de Ano Novo'
+    fill_in 'Código', with: 'VIRADA22'
+    fill_in 'Desconto', with: '22'
+    fill_in 'Quantidade de cupons', with: '50'
+    fill_in 'Data de término', with: '2022-01-31'
+    click_on 'Salvar'
+
+    visit promotion_path(promotion)
+    assert_text 'Ano Novo'
+    assert_text 'Promoção de Ano Novo'
+    assert_text '22,00%'
+    assert_text 'VIRADA22'
+    assert_text '31/01/2022'
+    assert_text '50'
+  end
+
+  test 'edit a promotion with coupons' do
+    promotion = Promotion.create!(name: 'Natal',
+                                  description: 'Promoção de Natal',
+                                  code: 'NATAL10',
+                                  discount_rate: 10,
+                                  coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
+    visit promotion_path(promotion)
+    click_on 'Gerar cupons'
+
+    visit edit_promotion_path(promotion)
+
+    assert_no_field 'Código'
+    assert_no_field 'Desconto'
+    assert_no_field 'Quantidade de cupons'
+    assert_no_field 'Data de término'
+  end
+
+  test 'delete a promotion' do
+    promotion = Promotion.create!(name: 'Natal',
+                                  description: 'Promoção de Natal',
+                                  code: 'NATAL10',
+                                  discount_rate: 10,
+                                  coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
+    visit promotions_path
+    click_on 'Deletar'
+    accept_prompt    
+    assert_text 'Nenhuma promoção cadastrada'
+  end
 end
