@@ -1,0 +1,22 @@
+<%= link_to 'Voltar', root_path %>
+
+<%= link_to 'Registrar uma categoria de produto', new_product_category_path %>
+
+<% if @product_categories.empty? %>
+  <h3>Nenhuma categoria de produto cadastrada</h3>
+<% end %>
+
+
+<% @product_categories.each do |product_category| %>
+  <dl>
+    <dd>Nome</dd>
+    <dt><%= link_to product_category.name, product_category %></dt>
+    <dd>Código</dd>
+    <dt><%= product_category.code %></dt>
+  </dl>
+
+  <%= link_to 'Editar', edit_product_category_path(product_category) %>
+  <%= link_to 'Deletar', product_category_path(product_category), method: :delete,
+      data: { confirm: 'Quer apagar esta categoria de produto?'} %>
+
+<% end %>
