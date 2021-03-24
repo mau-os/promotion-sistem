@@ -1,10 +1,11 @@
 class ProductCategoriesController < ApplicationController
+  before_action :set_product_category, only: %i[show edit update destroy]
+  
   def index
     @product_categories = ProductCategory.all
   end
 
   def show
-    set_product_category
   end
 
   def new
@@ -21,17 +22,14 @@ class ProductCategoriesController < ApplicationController
   end
 
   def edit
-    set_product_category
   end
 
   def update
-    set_product_category
     @product_category.update(product_category_params)
     redirect_to root_path
   end
 
   def destroy
-    set_product_category
     @product_category.destroy
     redirect_to product_categories_path
   end

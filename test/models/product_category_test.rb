@@ -15,6 +15,6 @@ class ProductCategoryTest < ActiveSupport::TestCase
     product_category = ProductCategory.new(code: 'ANTIFRA')
 
     refute product_category.valid?
-    assert_includes product_category.errors[:code], 'deve ser único'
+    assert_includes product_category.errors[:code], 'já está em uso'
   end
 end

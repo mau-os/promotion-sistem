@@ -59,7 +59,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     click_on 'Registrar uma categoria de produto'
     fill_in 'Nome', with: 'Produto AntiFraude'
     fill_in 'Código', with: 'ANTIFRA'
-    click_on 'Cadastrar'
+    click_on 'Criar Categoria de Produto'
 
     assert_current_path product_category_path(ProductCategory.last)
     assert_text 'Produto AntiFraude'
@@ -71,7 +71,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     visit root_path
     click_on 'Categorias de Produtos'
     click_on 'Registrar uma categoria de produto'
-    click_on 'Cadastrar'
+    click_on 'Criar Categoria de Produto'
 
     assert_text 'não pode ficar em branco', count: 2
   end
@@ -83,9 +83,9 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     click_on 'Categorias de Produtos'
     click_on 'Registrar uma categoria de produto'
     fill_in 'Código', with: 'ELECTRO'
-    click_on 'Cadastrar'
+    click_on 'Criar Categoria de Produto'
 
-    assert_text 'deve ser único'
+    assert_text 'já está em uso'
   end
 
   test 'edit a product category' do
@@ -96,7 +96,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
 
     fill_in 'Nome', with: 'Produto AntiFraude'
     fill_in 'Código', with: 'ANTIFRA'
-    click_on 'Salvar'
+    click_on 'Atualizar Categoria de Produto'
 
     visit product_category_path(product_category)
     assert_text 'Produto AntiFraude'

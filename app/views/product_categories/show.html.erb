@@ -1,8 +1,8 @@
 <%= link_to 'Voltar', product_categories_path %>
 
 <dl>
-  <dd>Nome</dd>
+  <dd><%= ProductCategory.human_attribute_name(:name) %></dd>
   <dt><%= @product_category.name %></dt>
-  <dd>Código</dd>
+  <dd><%= ProductCategory.human_attribute_name(:code) %></dd>
   <dt><%= @product_category.code %></dt>
 </dl>

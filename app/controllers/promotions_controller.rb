@@ -1,10 +1,11 @@
 class PromotionsController < ApplicationController
+  before_action :set_promotion, only: %i[show edit update destroy generate_coupons]
+
   def index
     @promotions = Promotion.all
   end
 
   def show
-    set_promotion
   end
 
   def new
@@ -21,32 +22,22 @@ class PromotionsController < ApplicationController
   end
 
   def edit
-    set_promotion
-    @generated_coupons = @promotion.coupons.any?
+    @generated_coupons = @promotion.coupons?
   end
 
   def update
-    set_promotion
     @promotion.update(promotion_params)
     redirect_to root_path
   end
 
   def destroy
-    set_promotion
     @promotion.destroy
     redirect_to promotions_path
   end
 
   def generate_coupons
-    set_promotion
-
-    (1..@promotion.coupon_quantity).each do |number|
-      Coupon.create!(code: "#{@promotion.code}-#{'%04d' % number}", promotion: @promotion)
-    end
-
-    flash[:notice] = 'Cupons gerados com sucesso'
-
-    redirect_to @promotion
+    @promotion.generate_coupons!
+    redirect_to @promotion, notice: t('.success')
   end
 
   private
