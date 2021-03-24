@@ -19,5 +19,14 @@
 <% end %>
 
 <% @promotion.coupons.each do |coupon| %>
-  <p><%= coupon.code %></p>
+  <div id="coupon-<%= coupon.code.parameterize %>">
+    <p>
+      <%= coupon.code %>
+      <% if coupon.disabled? %>
+        (<%= Coupon.human_attribute_name("status.#{coupon.status}")%>)
+      <% else %>
+        <%= link_to 'Desabilitar', disable_coupon_path(coupon), method: :post, data: { disable_with: 'Estamos desabilitando...' } %>
+      <% end %>
+    </p>
+  </div>
 <% end %>

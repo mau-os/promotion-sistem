@@ -146,7 +146,9 @@ class PromotionsTest < ApplicationSystemTestCase
                                   coupon_quantity: 100,
                                   expiration_date: '22/12/2033')
     visit promotions_path
-    click_on 'Editar'
+    within "div#promotion-#{promotion.code.parameterize}" do
+      click_on 'Editar'
+    end
 
     fill_in 'Nome', with: 'Ano Novo'
     fill_in 'Descrição', with: 'Promoção de Ano Novo'
@@ -191,7 +193,9 @@ class PromotionsTest < ApplicationSystemTestCase
                                   coupon_quantity: 100,
                                   expiration_date: '22/12/2033')
     visit promotions_path
-    click_on 'Deletar'
+    within "div#promotion-#{promotion.code.parameterize}" do
+      click_on 'Deletar'
+    end
     accept_prompt    
     assert_text 'Nenhuma promoção cadastrada'
   end

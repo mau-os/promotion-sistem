@@ -8,15 +8,16 @@
 
 
 <% @product_categories.each do |product_category| %>
-  <dl>
-    <dd>Nome</dd>
-    <dt><%= link_to product_category.name, product_category %></dt>
-    <dd>Código</dd>
-    <dt><%= product_category.code %></dt>
-  </dl>
+  <div id="product-category-<%= product_category.code.parameterize %>">
+    <dl>
+      <dd><%= ProductCategory.human_attribute_name(:name) %></dd>
+      <dt><%= link_to product_category.name, product_category %></dt>
+      <dd><%= ProductCategory.human_attribute_name(:code) %></dd>
+      <dt><%= product_category.code %></dt>
+    </dl>
 
-  <%= link_to 'Editar', edit_product_category_path(product_category) %>
-  <%= link_to 'Deletar', product_category_path(product_category), method: :delete,
-      data: { confirm: 'Quer apagar esta categoria de produto?'} %>
-
+    <%= link_to 'Editar', edit_product_category_path(product_category) %>
+    <%= link_to 'Deletar', product_category_path(product_category), method: :delete,
+        data: { confirm: 'Quer apagar esta categoria de produto?'} %>
+  </div>
 <% end %>

@@ -92,7 +92,9 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     product_category = ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
 
     visit product_categories_path
-    click_on 'Editar'
+    within "div#product-category-#{product_category.code.parameterize}" do
+      click_on 'Editar'
+    end
 
     fill_in 'Nome', with: 'Produto AntiFraude'
     fill_in 'Código', with: 'ANTIFRA'
@@ -104,10 +106,12 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'delete a product category' do
-    ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
+    product_category = ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
 
     visit product_categories_path
-    click_on 'Deletar'
+    within "div#product-category-#{product_category.code.parameterize}" do
+      click_on 'Deletar'
+    end
     accept_prompt    
     assert_text 'Nenhuma categoria de produto cadastrada'
   end
