@@ -54,6 +54,9 @@ class PromotionsTest < ApplicationSystemTestCase
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
 
+    user = User.create!(email: 'meu.email@iugu.com.br', password: 'password')
+    login_as user, scope: :user
+
     visit root_path
     click_on 'Promoções'
     click_on 'Voltar'
@@ -198,5 +201,17 @@ class PromotionsTest < ApplicationSystemTestCase
     end
     accept_prompt    
     assert_text 'Nenhuma promoção cadastrada'
+  end
+
+  test 'do not view promotion link without login' do
+    visit root_path
+
+    assert_no_link 'Promoções'
+  end
+
+  test 'do not view promotions using route without login' do
+    visit promotions_path
+    
+    assert_current_path new_user_session_path
   end
 end
