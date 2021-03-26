@@ -45,9 +45,3 @@ class Authentication < ApplicationSystemTestCase
     assert_no_link 'Entrar'
   end
 end
-
-# TODO: TESTE DE SAIR
-# TODO: TESTE DE FALHA AO REGISTRAR
-# TODO: TESTE DE FALHA AO LOGAR
-# TODO: TESTE de recuperar senha
-# TODO: I18n do user

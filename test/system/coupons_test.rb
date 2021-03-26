@@ -12,7 +12,7 @@ class CouponsTest < ApplicationSystemTestCase
     promotion.generate_coupons!
     coupon = promotion.coupons[0]
     
-
+    login_user
     visit promotion_path(promotion)
     within "div#coupon-#{coupon.code.parameterize}" do
       click_on 'Desabilitar'
