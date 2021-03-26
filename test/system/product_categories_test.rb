@@ -5,6 +5,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
     ProductCategory.create!(name: 'Produto AntiFraude', code: 'ANTIFRA')
 
+    login_user
     visit root_path
     click_on 'Categorias de Produtos'
 
@@ -18,6 +19,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
     ProductCategory.create!(name: 'Produto AntiFraude', code: 'ANTIFRA')
 
+    login_user
     visit product_categories_path
     click_on 'Produto AntiFraude'
 
@@ -26,6 +28,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'no product category are available' do
+    login_user
     visit root_path
     click_on 'Categorias de Produtos'
 
@@ -35,6 +38,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   test 'view product categories and return to home page' do
     ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
 
+    login_user
     visit root_path
     click_on 'Categorias de Produtos'
     click_on 'Voltar'
@@ -45,6 +49,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   test 'view details and return to product categories page' do
     ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
 
+    login_user
     visit root_path
     click_on 'Categorias de Produtos'
     click_on 'Eletrônico'
@@ -54,6 +59,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'create a product category' do
+    login_user
     visit root_path
     click_on 'Categorias de Produtos'
     click_on 'Registrar uma categoria de produto'
@@ -68,6 +74,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'create and attributes cannot be blank' do
+    login_user
     visit root_path
     click_on 'Categorias de Produtos'
     click_on 'Registrar uma categoria de produto'
@@ -79,6 +86,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   test 'create and code must be unique' do
     ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
 
+    login_user
     visit root_path
     click_on 'Categorias de Produtos'
     click_on 'Registrar uma categoria de produto'
@@ -91,6 +99,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   test 'edit a product category' do
     product_category = ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
 
+    login_user
     visit product_categories_path
     within "div#product-category-#{product_category.code.parameterize}" do
       click_on 'Editar'
@@ -108,6 +117,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   test 'delete a product category' do
     product_category = ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
 
+    login_user
     visit product_categories_path
     within "div#product-category-#{product_category.code.parameterize}" do
       click_on 'Deletar'
@@ -115,4 +125,38 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     accept_prompt    
     assert_text 'Nenhuma categoria de produto cadastrada'
   end
+
+  test 'cannot see product categories link without login' do
+    visit root_path
+
+    assert_no_link 'Categorias de Produtos'
+  end
+
+  test 'cannot see product categories without login' do
+    product_category = ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
+
+    visit product_categories_path
+    assert_current_path new_user_session_path
+  end
+
+  test 'cannot see a product category details without login' do
+    product_category = ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
+
+    visit product_category_path(product_category)
+    assert_current_path new_user_session_path
+  end
+
+  test 'cannot create a product category without login' do
+    visit new_product_category_path
+
+    assert_current_path new_user_session_path
+  end
+
+  test 'cannot edit a product category without login' do
+    product_category = ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
+
+    visit edit_product_category_path(product_category)
+    assert_current_path new_user_session_path
+  end
+
 end
