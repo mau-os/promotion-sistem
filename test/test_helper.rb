@@ -1,11 +1,12 @@
 ENV['RAILS_ENV'] ||= 'test'
 require_relative "../config/environment"
 require "rails/test_help"
-require 'helpers/login_helper'
+
+Dir[Rails.root.join('test/support/**/*.rb')].each { |f| require f  }
 
 class ActiveSupport::TestCase
   include Warden::Test::Helpers
-  include LoginHelper
+  include LoginMacros
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)
 
