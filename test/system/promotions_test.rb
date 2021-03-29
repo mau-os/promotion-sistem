@@ -213,6 +213,60 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'Nenhuma promoção cadastrada'
   end
 
+  test 'search promotion by term and finds results' do
+    christmas = Promotion.create!(name: 'Natal',
+                                  description: 'Promoção de Natal',
+                                  code: 'NATAL10',
+                                  discount_rate: 10,
+                                  coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
+    christmassy = Promotion.create!(name: 'Natalina',
+                                    description: 'Promoção de Natal',
+                                    code: 'NATAL11',
+                                    discount_rate: 10,
+                                    coupon_quantity: 100,
+                                    expiration_date: '22/12/2033')
+    cyber_monday = Promotion.create!(name: 'Cyber Monday',
+                                    coupon_quantity: 100,
+                                    description: 'Promoção de Cyber Monday',
+                                    code: 'CYBER15', discount_rate: 15,
+                                    expiration_date: '22/12/2033')
+    login_user
+    visit root_path
+    click_on 'Promoções'
+    fill_in 'Busca', with: 'natal'
+    click_on 'Buscar'
+
+    assert_text christmas.name
+    assert_text christmassy.name
+    refute_text cyber_monday.name
+  end
+
+  test 'search with no results' do
+    christmas = Promotion.create!(name: 'Natal',
+                                  description: 'Promoção de Natal',
+                                  code: 'NATAL10',
+                                  discount_rate: 10,
+                                  coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
+    christmassy = Promotion.create!(name: 'Natalina',
+                                    description: 'Promoção de Natal',
+                                    code: 'NATAL11',
+                                    discount_rate: 10,
+                                    coupon_quantity: 100,
+                                    expiration_date: '22/12/2033')
+    login_user
+    visit root_path
+    click_on 'Promoções'
+    fill_in 'Busca', with: 'cyber'
+    click_on 'Buscar'
+
+    assert_text 'Não foram localizadas promoções para esta busca'
+    refute_text christmas.name
+    refute_text christmassy.name
+  end
+
+
   test 'do not view promotion link without login' do
     visit root_path
 
@@ -252,6 +306,12 @@ class PromotionsTest < ApplicationSystemTestCase
                                   expiration_date: '22/12/2033')
     visit edit_promotion_path(promotion)
 
+    assert_current_path new_user_session_path
+  end
+
+  test 'can not search promotions withou login' do
+    visit search_promotions_path
+    
     assert_current_path new_user_session_path
   end
 end

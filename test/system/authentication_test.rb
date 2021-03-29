@@ -44,10 +44,16 @@ class Authentication < ApplicationSystemTestCase
     assert_link 'Sair'
     assert_no_link 'Entrar'
   end
-end
 
-# TODO: TESTE DE SAIR
-# TODO: TESTE DE FALHA AO REGISTRAR
-# TODO: TESTE DE FALHA AO LOGAR
-# TODO: TESTE de recuperar senha
-# TODO: I18n do user
+  test 'user sign out' do
+    login_user
+
+    visit root_path    
+    click_on 'Sair'
+
+    assert_current_path new_user_session_path
+    assert_no_text 'meu.email@iugu.com.br'
+    assert_link 'Entrar'
+    assert_no_link 'Sair'
+  end
+end

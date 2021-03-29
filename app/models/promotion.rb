@@ -19,4 +19,7 @@ class Promotion < ApplicationRecord
     coupons.any?
   end
 
+  def self.search(query)
+    where('name LIKE ?', "%#{query}%")
+  end
 end

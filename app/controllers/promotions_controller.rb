@@ -41,6 +41,10 @@ class PromotionsController < ApplicationController
     redirect_to @promotion, notice: t('.success')
   end
 
+  def search
+    @promotions = Promotion.search(params[:q])
+  end
+
   private
 
     def set_promotion

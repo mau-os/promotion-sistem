@@ -2,8 +2,9 @@ Rails.application.routes.draw do
   devise_for :users
   root 'home#index'
 
-  resources :promotions, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+  resources :promotions do
     post 'generate_coupons', on: :member
+    get 'search', on: :collection
   end
 
   resources :coupons, only: [] do
@@ -11,5 +12,5 @@ Rails.application.routes.draw do
     post 'activate', on: :member
   end
 
-  resources :product_categories , only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  resources :product_categories
 end

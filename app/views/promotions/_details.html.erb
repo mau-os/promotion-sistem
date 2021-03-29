@@ -1,0 +1,25 @@
+<%= link_to 'Voltar', root_path %>
+
+<%= link_to 'Registrar uma promoção', new_promotion_path %>
+
+<%= form_with url: search_promotions_path, method: :get do |f| %>
+  <%= f.label :q, 'Busca'%>
+  <%= f.text_field :q%>
+  <%= f.submit 'Buscar'%>
+
+<% end %>
+
+<% promotions.each do |promotion| %>
+  <div id="promotion-<%= promotion.code.parameterize %>">
+    <h3><%= link_to promotion.name, promotion %></h3>
+    <dl>
+      <dt><%= Promotion.human_attribute_name(:description) %></dt>
+      <dd><%= promotion.description %></dd>
+      <dt><%= Promotion.human_attribute_name(:discount_rate) %> <small>em porcentagem</small></dt>
+      <dd><%= number_to_percentage promotion.discount_rate, precision: 2 %></dd>
+    </dl>
+    <%= link_to 'Editar', edit_promotion_path(promotion) %>
+    <%= link_to 'Deletar', promotion_path(promotion), method: :delete,
+        data: { confirm: 'Quer apagar esta promoção?'} %>
+  </div>
+<% end %>
