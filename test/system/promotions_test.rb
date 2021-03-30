@@ -156,7 +156,7 @@ class PromotionsTest < ApplicationSystemTestCase
                                   expiration_date: '22/12/2033')
     login_user
     visit promotions_path
-    within "div#promotion-#{promotion.code.parameterize}" do
+    within "tr#promotion-#{promotion.code.parameterize}" do
       click_on 'Editar'
     end
 
@@ -206,7 +206,7 @@ class PromotionsTest < ApplicationSystemTestCase
                                   expiration_date: '22/12/2033')
     login_user
     visit promotions_path
-    within "div#promotion-#{promotion.code.parameterize}" do
+    within "tr#promotion-#{promotion.code.parameterize}" do
       click_on 'Deletar'
     end
     accept_prompt    

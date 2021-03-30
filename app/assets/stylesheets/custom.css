@@ -1,0 +1,7 @@
+.last-2-colluns-right td:last-child,
+.last-2-colluns-right td:nth-last-child(2),
+.last-2-colluns-right th:last-child,
+.last-2-colluns-right th:nth-last-child(2) {
+  align-content: flex-end;
+  width: 6%;
+}

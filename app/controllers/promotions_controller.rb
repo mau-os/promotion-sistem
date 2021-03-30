@@ -28,7 +28,7 @@ class PromotionsController < ApplicationController
 
   def update
     @promotion.update(promotion_params)
-    redirect_to root_path
+    redirect_to promotions_path
   end
 
   def destroy
