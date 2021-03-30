@@ -1,37 +1,38 @@
-<%= link_to 'Voltar', root_path %>
-
-<%= link_to 'Registrar uma promoção', new_promotion_path %>
+<div class="d-flex justify-content-between">
+  <%= link_to 'Voltar', root_path %>
+  <%= link_to 'Registrar uma promoção', new_promotion_path, class: 'text-end' %>
+</div>
 
 <% if show_search %>
-  <%= form_with url: search_promotions_path, method: :get do |f| %>
-    <%= f.label :q, 'Busca'%>
-    <%= f.text_field :q%>
-    <%= f.submit 'Buscar'%>
-  <% end %>
+  <div class="float-end mb-3">
+    <%= form_with url: search_promotions_path, method: :get do |f| %>
+      <%= f.label :q, 'Busca'%>
+      <%= f.text_field :q%>
+      <%= f.submit 'Buscar'%>
+    <% end %>
+  </div>
 <% end %>
 
 <% if promotions.any? %>
-  <div class="mt-3">
-    <table class="table table-striped table-hover last-2-colluns-right">
-      <tr class="table-dark">
-        <th><%= Promotion.human_attribute_name(:name) %></th>
-        <th><%= Promotion.human_attribute_name(:description) %></th>
-        <th><%= Promotion.human_attribute_name(:discount_rate) %></th>
-        <th></th>
-        <th></th>
+  <table class="table table-striped table-hover last-2-colluns-right">
+    <tr class="table-dark">
+      <th><%= Promotion.human_attribute_name(:name) %></th>
+      <th><%= Promotion.human_attribute_name(:description) %></th>
+      <th><%= Promotion.human_attribute_name(:discount_rate) %></th>
+      <th></th>
+      <th></th>
+    </tr>
+    <% promotions.each do |promotion| %>
+      <tr id="promotion-<%= promotion.code.parameterize %>">
+        <td><%= link_to promotion.name, promotion %></td>
+        <td><%= promotion.description %></td>
+        <td><%= number_to_percentage promotion.discount_rate, precision: 2 %></td>
+        <td><%= link_to 'Editar', edit_promotion_path(promotion) %></td>
+        <td>
+          <%= link_to 'Deletar', promotion_path(promotion), method: :delete,
+              data: { confirm: 'Quer apagar esta promoção?'} %>
+        </td>
       </tr>
-      <% promotions.each do |promotion| %>
-        <tr id="promotion-<%= promotion.code.parameterize %>">
-          <td><%= link_to promotion.name, promotion %></td>
-          <td><%= promotion.description %></td>
-          <td><%= number_to_percentage promotion.discount_rate, precision: 2 %></td>
-          <td><%= link_to 'Editar', edit_promotion_path(promotion) %></td>
-          <td>
-            <%= link_to 'Deletar', promotion_path(promotion), method: :delete,
-                data: { confirm: 'Quer apagar esta promoção?'} %>
-          </td>
-        </tr>
-      <% end %>
-    </table>
-  </div>
+    <% end %>
+  </table>
 <% end %>

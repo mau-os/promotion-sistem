@@ -8,13 +8,13 @@
 
 
 <%= form_with model: @product_category do |f| %>
-  <div>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+  <div class="mb-3">
+    <%= f.label :name, class: 'form-label' %>
+    <%= f.text_field :name, class: 'form-control' %>
   </div>
-  <div>
-    <%= f.label :code %>
-    <%= f.text_field :code %>
+  <div class="mb-3">
+    <%= f.label :code, class: 'form-label' %>
+    <%= f.text_field :code, class: 'form-control' %>
   </div>
-  <%= f.submit %>
+  <%= f.submit class: 'btn btn-primary' %>
 <% end %>

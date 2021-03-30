@@ -101,7 +101,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
 
     login_user
     visit product_categories_path
-    within "div#product-category-#{product_category.code.parameterize}" do
+    within "tr#product-category-#{product_category.code.parameterize}" do
       click_on 'Editar'
     end
 
@@ -119,7 +119,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
 
     login_user
     visit product_categories_path
-    within "div#product-category-#{product_category.code.parameterize}" do
+    within "tr#product-category-#{product_category.code.parameterize}" do
       click_on 'Deletar'
     end
     accept_prompt    
