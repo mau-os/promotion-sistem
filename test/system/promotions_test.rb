@@ -270,7 +270,7 @@ class PromotionsTest < ApplicationSystemTestCase
   test 'do not view promotion link without login' do
     visit root_path
 
-    assert_no_link 'Promoções'
+    assert_no_link 'Promoções', exact: true
   end
 
   test 'do not view promotions using route without login' do

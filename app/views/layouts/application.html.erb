@@ -11,19 +11,24 @@
   </head>
 
   <body>
-    <nav>
-      <% if user_signed_in? %>
-        <%= current_user.email %>
-        <%= link_to 'Sair', destroy_user_session_path, method: :delete %>
-        <%= link_to 'Promoções', promotions_path %>
-        <%= link_to 'Categorias de Produtos', product_categories_path %>
-      <% else %>
-        <%= link_to 'Cadastrar', new_user_registration_path %>
-        <%= link_to 'Entrar', new_user_session_path %>
-      <% end %>
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container-fluid">
+        <%= link_to 'Sistema de Promoções', root_path, class: 'navbar-brand' %>
+        <%# <div class="collapse navbar-collapse" id="navbarSupportedContent"> %>
+          <ul class="nav justify-content-end">
+            <% if user_signed_in? %>
+              <%= render partial: 'shared/logged_menu'%>
+            <% else %>
+              <%= render partial: 'shared/not_logged_menu'%>
+            <% end %>
+          </ul>
+        <%# </div> %>
+      </div>
     </nav>
-    <p><%= flash[:notice] %></p>
-    <p><%= flash[:alert] %></p>
-    <%= yield %>
+    <div class='container'>
+      <p><%= flash[:notice] %></p>
+      <p><%= flash[:alert] %></p>
+      <%= yield %>
+    </div>
   </body>
 </html>

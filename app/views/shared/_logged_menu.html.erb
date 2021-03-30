@@ -1,0 +1,12 @@
+<li class="nav-item">
+  <%= link_to current_user.email, '#', class: 'nav-link disabled' %>
+</li>
+<li class="nav-item">
+  <%= link_to 'Promoções', promotions_path, class: 'nav-link' %>
+</li>
+<li class="nav-item">
+  <%= link_to 'Categorias de Produtos', product_categories_path, class: 'nav-link active' %>
+</li>
+<li class="nav-item">
+  <%= link_to 'Sair', destroy_user_session_path, method: :delete, class: 'nav-link active' %>
+</li>

@@ -1,5 +1,5 @@
+<%= render partial: 'details', locals: { promotions: @promotions, show_search: @promotions.any? } %>
+
 <% if @promotions.empty? %>
   <h3>Nenhuma promoção cadastrada</h3>
 <% end %>
-
-<%= render partial: 'details', locals: { promotions: @promotions } %>
