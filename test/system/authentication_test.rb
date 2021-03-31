@@ -56,4 +56,19 @@ class Authentication < ApplicationSystemTestCase
     assert_link 'Entrar'
     assert_no_link 'Sair'
   end
+
+  test 'user edit password' do
+    user = User.create!(email: 'meu.email@iugu.com.br', password: 'password')
+    token = user.send(:set_reset_password_token)
+
+
+    visit edit_user_password_path(user, reset_password_token: token)
+
+    fill_in 'Nova senha', with: '654321'
+    fill_in 'Confirmação de nova senha', with: '654321'
+    click_on 'Trocar minha senha'
+
+    assert_text 'Sua senha foi alterada com sucesso'
+    assert_current_path root_path
+  end
 end

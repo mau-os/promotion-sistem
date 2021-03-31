@@ -2,12 +2,14 @@ require 'test_helper'
 
 class CouponFlowTest < ActionDispatch::IntegrationTest
   test 'cannot disable a coupon without login' do
+    user = User.create!(email: 'meu.email@iugu.com.br', password: '123456')
     promotion = Promotion.create!(name: 'Natal',
                                   description: 'Promoção de Natal',
                                   code: 'NATAL10',
                                   discount_rate: 15,
                                   coupon_quantity: 5,
-                                  expiration_date: '22/12/2033')
+                                  expiration_date: '22/12/2033',
+                                  user: user)
     promotion.generate_coupons!
     coupon = promotion.coupons[0]
 
@@ -16,12 +18,14 @@ class CouponFlowTest < ActionDispatch::IntegrationTest
   end
 
   test 'cannot activate a coupon without login' do
+    user = User.create!(email: 'meu.email@iugu.com.br', password: '123456')
     promotion = Promotion.create!(name: 'Natal',
                                   description: 'Promoção de Natal',
                                   code: 'NATAL10',
                                   discount_rate: 15,
                                   coupon_quantity: 5,
-                                  expiration_date: '22/12/2033')
+                                  expiration_date: '22/12/2033',
+                                  user: user)
     promotion.generate_coupons!
     coupon = promotion.coupons[0]
     coupon.disabled!
