@@ -16,8 +16,11 @@ class CouponApiTest < ActionDispatch::IntegrationTest
     promotion.generate_coupons!
     coupon = promotion.coupons[0]
 
-    get "api/v1/coupons/#{coupon.code}"
+    get "/api/v1/coupons/#{coupon.code}"
 
     assert_response :success
+    body = JSON.parse(response.body, symbolize_names: true)
+    puts body
+    assert_equal coupon.code, body[:code]
   end
 end
