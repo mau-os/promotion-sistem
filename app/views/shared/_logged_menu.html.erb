@@ -5,8 +5,13 @@
   <%= link_to 'Promoções', promotions_path, class: 'nav-link' %>
 </li>
 <li class="nav-item">
+  <a href="#couponModal" data-bs-toggle="modal" data-target="#couponModal" class="nav-link active">Buscar Cupom</a>
+</li>
+<li class="nav-item">
   <%= link_to 'Categorias de Produtos', product_categories_path, class: 'nav-link active' %>
 </li>
 <li class="nav-item">
   <%= link_to 'Sair', destroy_user_session_path, method: :delete, class: 'nav-link active' %>
 </li>
+
+<%= render partial: 'shared/coupon_search_modal' %>

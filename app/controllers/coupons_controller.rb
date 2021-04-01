@@ -10,4 +10,9 @@ class CouponsController < ApplicationController
     @coupon.active!
     redirect_to @coupon.promotion, notice: 'Cupom NATAL10-0001 ativado com sucesso'
   end
+
+  def search
+    @coupon = Coupon.find_by(code: params[:code])
+    redirect_back fallback_location: :fallback_location, notice: 'Cupom não encontrado' unless @coupon.present?
+  end
 end

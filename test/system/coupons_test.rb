@@ -28,7 +28,7 @@ class CouponsTest < ApplicationSystemTestCase
   end
 
 
-  test 'enable a activate coupon' do
+  test 'enable a disabled coupon' do
     user = login_user
     promotion = Promotion.create!(name: 'Natal',
                                   description: 'Promoção de Natal',
@@ -55,5 +55,52 @@ class CouponsTest < ApplicationSystemTestCase
       assert_no_link 'Ativar'
     end
     assert_link 'Desabilitar', count: promotion.coupon_quantity
+  end
+
+  test 'search a coupon with success' do
+    user = login_user
+    promotion = Promotion.create!(name: 'Natal',
+                                  description: 'Promoção de Natal',
+                                  code: 'NATAL10',
+                                  discount_rate: 10,
+                                  coupon_quantity: 3,
+                                  expiration_date: '22/12/2033',
+                                  user: user)
+
+    promotion.generate_coupons!
+    coupon = promotion.coupons[1]
+
+    visit root_path
+    click_on 'Buscar Cupom'
+    fill_in 'Código', with: coupon.code
+    click_on 'Buscar'
+
+    assert_text 'NATAL10-0002'
+    assert_text 'ativo'
+    assert_text 'Promoção de Natal'
+    assert_text '10,00%'
+    assert_text '22/12/2033'
+  end
+
+  test 'search a coupon without success' do
+    user = login_user
+    promotion = Promotion.create!(name: 'Natal',
+                                  description: 'Promoção de Natal',
+                                  code: 'NATAL10',
+                                  discount_rate: 10,
+                                  coupon_quantity: 3,
+                                  expiration_date: '22/12/2033',
+                                  user: user)
+
+    promotion.generate_coupons!
+    coupon = promotion.coupons[1]
+
+    visit root_path
+    click_on 'Buscar Cupom'
+    fill_in 'Código', with: 'teste'
+    click_on 'Buscar'
+
+    assert_current_path root_path
+    assert_text 'Cupom não encontrado'
   end
 end

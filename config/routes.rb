@@ -11,8 +11,11 @@ Rails.application.routes.draw do
   end
 
   resources :coupons, only: [] do
-    post 'disable', on: :member
-    post 'activate', on: :member
+    member do
+      post 'disable'
+      post 'activate'
+    end
+    get 'search', on: :collection
   end
 
   resources :product_categories
