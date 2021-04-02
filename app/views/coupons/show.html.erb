@@ -1,0 +1,14 @@
+<h3><%= @coupon.code %></h3>
+<dl>
+  <dt><%= Coupon.human_attribute_name(:status) %></dt>
+  <dd><%= Coupon.human_attribute_name("status.#{@coupon.status}").camelize %></dd>
+  <dt><%= Promotion.model_name.human %></dt>
+  <dd><%= @coupon.promotion.name %></dd>
+  <dt><%= Promotion.human_attribute_name(:description) %></dt>
+  <dd><%= @coupon.promotion.description %></dd>
+  <dt><%= Promotion.human_attribute_name(:discount_rate) %></dt>
+  <dd><%= number_to_percentage @coupon.promotion.discount_rate, precision: 2 %></dd>
+  <dt><%= Promotion.human_attribute_name(:expiration_date) %></dt>
+  <dd><%= l @coupon.promotion.expiration_date %></dd>
+</dl>
+

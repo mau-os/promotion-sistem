@@ -1,7 +1,7 @@
 class PromotionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_promotion, only: %i[show edit update destroy generate_coupons approve]
-  before_action :can_be_approved, only: [:approve]
+  before_action :can_be_approved, only: %i[approve]
 
   def index
     @promotions = Promotion.all

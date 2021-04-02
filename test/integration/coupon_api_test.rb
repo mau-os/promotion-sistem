@@ -20,7 +20,6 @@ class CouponApiTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     body = JSON.parse(response.body, symbolize_names: true)
-    puts body
     assert_equal coupon.code, body[:code]
   end
 end

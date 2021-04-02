@@ -75,8 +75,9 @@ class CouponsTest < ApplicationSystemTestCase
     fill_in 'Código', with: coupon.code
     click_on 'Buscar'
 
+    assert_current_path coupon_path(coupon)
     assert_text 'NATAL10-0002'
-    assert_text 'ativo'
+    assert_text 'Ativo'
     assert_text 'Promoção de Natal'
     assert_text '10,00%'
     assert_text '22/12/2033'
@@ -97,10 +98,28 @@ class CouponsTest < ApplicationSystemTestCase
 
     visit root_path
     click_on 'Buscar Cupom'
-    fill_in 'Código', with: 'teste'
+    fill_in 'Código', with: 'inexistente'
     click_on 'Buscar'
 
     assert_current_path root_path
     assert_text 'Cupom não encontrado'
+  end
+
+  test 'cannot see a coupon without login' do
+    user = User.create!(email: 'meu.email@iugu.com.br', password: '123456')
+    promotion = Promotion.create!(name: 'Natal',
+                                  description: 'Promoção de Natal',
+                                  code: 'NATAL10',
+                                  discount_rate: 10,
+                                  coupon_quantity: 3,
+                                  expiration_date: '22/12/2033',
+                                  user: user)
+
+    promotion.generate_coupons!
+    coupon = promotion.coupons[1]
+
+    visit coupon_path(coupon)
+
+    assert_current_path new_user_session_path
   end
 end

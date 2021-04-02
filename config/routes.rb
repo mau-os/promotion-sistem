@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     get 'search', on: :collection
   end
 
-  resources :coupons, only: [] do
+  resources :coupons, only: [:show] do
     member do
       post 'disable'
       post 'activate'
