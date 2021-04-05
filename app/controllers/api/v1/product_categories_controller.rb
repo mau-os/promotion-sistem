@@ -10,7 +10,7 @@ class Api::V1::ProductCategoriesController < Api::V1::ApiController
     if @product_category.save
       render json: @product_category
     else
-      render json: { "error": 400, "messages": @product_category.errors.full_messages }
+      render json: { errors: @product_category.errors.full_messages }, status: :unprocessable_entity
     end
   end
 end
