@@ -3,7 +3,9 @@ require 'application_system_test_case'
 class Authentication < ApplicationSystemTestCase
   test 'user sign up' do
     visit root_path
-    click_on 'Cadastrar'
+    within '#nav-sign-up' do
+      click_on 'Cadastrar'
+    end
     fill_in 'Email', with: 'meu.email@iugu.com.br'
     fill_in 'Senha', with: 'password'
     fill_in 'Confirmação de senha', with: 'password'
@@ -20,7 +22,9 @@ class Authentication < ApplicationSystemTestCase
 
   test 'no blank fields in sign in' do
     visit root_path
-    click_on 'Cadastrar'
+    within '#nav-sign-up' do
+      click_on 'Cadastrar'
+    end
     within 'form' do
       click_on 'Cadastrar'
     end
@@ -36,7 +40,7 @@ class Authentication < ApplicationSystemTestCase
     click_on 'Entrar'
     fill_in 'Email', with: user.email
     fill_in 'Senha', with: user.password
-    click_on 'Log in'
+    click_on 'Continuar'
 
     assert_text 'Login efetuado com sucesso!'
     assert_text user.email
