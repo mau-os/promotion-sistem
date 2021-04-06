@@ -16,10 +16,22 @@ class CouponApiTest < ActionDispatch::IntegrationTest
     promotion.generate_coupons!
     coupon = promotion.coupons[0]
 
-    get "/api/v1/coupons/#{coupon.code}"
+    get "/api/v1/coupons/#{coupon.code}", as: :json
 
     assert_response :success
     body = JSON.parse(response.body, symbolize_names: true)
-    assert_equal coupon.code, body[:code]
+    assert_equal promotion.discount_rate.to_s, body[:discount_rate]
+  end
+
+  test 'show coupon not found' do
+    get '/api/v1/coupons/0', as: :json
+
+    assert_response :not_found
+  end
+
+  test 'route invalid without json header' do
+    assert_raises ActionController::RoutingError do
+      get '/api/v1/coupons/0'
+    end
   end
 end
