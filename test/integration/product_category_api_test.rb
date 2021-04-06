@@ -1,36 +1,58 @@
 require 'test_helper'
 
 class ProductCategoryApiTest < ActionDispatch::IntegrationTest
-  test 'show product category' do
-    product_category = ProductCategory.create!(name: 'Produto AntiFraude',
-                                               code: 'ANTIFRA')
+  def setup
+    @product_category = ProductCategory.create!(name: 'Produto AntiFraude',
+                                                code: 'ANTIFRA')
+  end
 
-    get "/api/v1/product_categories/#{product_category.code}", as: :json
+  test 'show product category' do
+    get "/api/v1/product_categories/#{@product_category.code}", as: :json
 
     assert_response :success
     body = JSON.parse(response.body, symbolize_names: true)
-    assert_equal product_category.code, body[:code]
-    assert_equal product_category.name, body[:name]
+    assert_equal @product_category.code, body[:code]
+    assert_equal @product_category.name, body[:name]
   end
 
   test 'create a product category' do
     post '/api/v1/product_categories', as: :json, params: {
       product_category: {
-        name: 'Produto AntiFraude',
-        code: 'ANTIFRA',
+        name: 'Produto Perecivel',
+        code: 'PRODPERE',
       }
     }
 
     assert_response :success
     body = JSON.parse(response.body, symbolize_names: true)
-    assert_equal 'ANTIFRA', body[:code]
-    assert_equal 'Produto AntiFraude', body[:name]
+    assert_equal 'PRODPERE', body[:code]
+    assert_equal 'Produto Perecivel', body[:name]
+  end
+
+  test 'update a product category' do
+    patch "/api/v1/product_categories/#{@product_category.code}",
+            as: :json,
+            params: {
+              code: 'FRAC1',
+              name: 'Fracionado'
+            }
+
+    assert_response :success
+    body = JSON.parse(response.body, symbolize_names: true)
+    assert_equal 'FRAC1', body[:code]
+    assert_equal 'Fracionado', body[:name]
+  end
+
+  test 'destroy a product category' do
+    delete "/api/v1/product_categories/#{@product_category.code}", as: :json
+
+    assert_response :no_content
   end
 
   test 'do not create product category without all params' do
     post '/api/v1/product_categories', as: :json, params: {
       product_category: {
-        name: 'Produto AntiFraude'
+        name: 'Produto Perecivel'
       }
     }
 
