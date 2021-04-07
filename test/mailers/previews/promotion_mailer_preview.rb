@@ -1,4 +1,4 @@
-class PromotionMailerPreview < ActionMailer::PromotionMailerPreview
+class PromotionMailerPreview < ActionMailer::Preview
   def approval_email
     PromotionMailer
       .with(approver: User.first, promotion: Promotion.first)
