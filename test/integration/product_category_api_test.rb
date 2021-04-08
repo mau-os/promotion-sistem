@@ -1,18 +1,14 @@
 require 'test_helper'
 
 class ProductCategoryApiTest < ActionDispatch::IntegrationTest
-  def setup
-    @product_category = ProductCategory.create!(name: 'Produto AntiFraude',
-                                                code: 'ANTIFRA')
-  end
-
   test 'show product category' do
-    get "/api/v1/product_categories/#{@product_category.code}", as: :json
+    product_category = Fabricate(:product_category)
+    get "/api/v1/product_categories/#{product_category.code}", as: :json
 
     assert_response :success
     body = JSON.parse(response.body, symbolize_names: true)
-    assert_equal @product_category.code, body[:code]
-    assert_equal @product_category.name, body[:name]
+    assert_equal product_category.code, body[:code]
+    assert_equal product_category.name, body[:name]
   end
 
   test 'create a product category' do
@@ -30,7 +26,8 @@ class ProductCategoryApiTest < ActionDispatch::IntegrationTest
   end
 
   test 'update a product category' do
-    patch "/api/v1/product_categories/#{@product_category.code}",
+    product_category = Fabricate(:product_category)
+    patch "/api/v1/product_categories/#{product_category.code}",
             as: :json,
             params: {
               code: 'FRAC1',
@@ -44,7 +41,8 @@ class ProductCategoryApiTest < ActionDispatch::IntegrationTest
   end
 
   test 'destroy a product category' do
-    delete "/api/v1/product_categories/#{@product_category.code}", as: :json
+    product_category = Fabricate(:product_category)
+    delete "/api/v1/product_categories/#{product_category.code}", as: :json
 
     assert_response :no_content
   end

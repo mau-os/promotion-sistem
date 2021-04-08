@@ -20,33 +20,23 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'code must be uniq' do
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: @user)
-    promotion = Promotion.new(code: 'NATAL10')
+    promotion = Fabricate(:promotion)
+    new_promotion = Promotion.new(code: promotion.code)
 
-    refute promotion.valid?
-    assert_includes promotion.errors[:code], 'já está em uso'
+    refute new_promotion.valid?
+    assert_includes new_promotion.errors[:code], 'já está em uso'
   end
 
   test 'name must be uniq' do
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: @user)
-    promotion = Promotion.new(name: 'Natal')
+    promotion = Fabricate(:promotion)
+    new_promotion = Promotion.new(name: promotion.name)
 
-    refute promotion.valid?
-    assert_includes promotion.errors[:name], 'já está em uso'
+    refute new_promotion.valid?
+    assert_includes new_promotion.errors[:name], 'já está em uso'
   end
 
   test 'generate_coupons! succesfully' do
-    promotion = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 100,
-                                  expiration_date: '22/12/2033',
-                                  user: @user)
+    promotion = Fabricate(:promotion, code: 'NATAL10')
 
       promotion.generate_coupons!
       assert_equal promotion.coupons.size, promotion.coupon_quantity
@@ -54,13 +44,7 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'generate_coupons! cannot be called twice' do
-    promotion = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 100,
-                                  expiration_date: '22/12/2033',
-                                  user: @user)
+    promotion = Fabricate(:promotion)
 
     Coupon.create!(code:'BLABLABLA', promotion: promotion)
 
@@ -71,19 +55,8 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test '.search by exact' do
-    christmas = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 100,
-                                  expiration_date: '22/12/2033',
-                                  user: @user)
-    cyber_monday = Promotion.create!(name: 'Cyber Monday',
-                                     coupon_quantity: 100,
-                                     description: 'Promoção de Cyber Monday',
-                                     code: 'CYBER15', discount_rate: 15,
-                                     expiration_date: '22/12/2033',
-                                     user: @user)
+    christmas = Fabricate(:promotion, code: 'NATAL10', name: 'Natal')
+    cyber_monday = Fabricate(:promotion, code: 'CYBER15', name: 'Cyber Monday')
 
 
     result = Promotion.search('Natal')
@@ -92,27 +65,9 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test '.search by partial' do
-    christmas = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 100,
-                                  expiration_date: '22/12/2033',
-                                  user: @user)
-    christmassy = Promotion.create!(name: 'Natalina',
-                                    description: 'Promoção de Natal',
-                                    code: 'NATAL11',
-                                    discount_rate: 10,
-                                    coupon_quantity: 100,
-                                    expiration_date: '22/12/2033',
-                                    user: @user)
-    cyber_monday = Promotion.create!(name: 'Cyber Monday',
-                                     coupon_quantity: 100,
-                                     description: 'Promoção de Cyber Monday',
-                                     code: 'CYBER15', discount_rate: 15,
-                                     expiration_date: '22/12/2033',
-                                     user: @user)
-
+    christmas = Fabricate(:promotion, code: 'NATAL10', name: 'Natal')
+    christmassy = Fabricate(:promotion, code: 'NATAL11', name: 'Natalina')
+    cyber_monday = Fabricate(:promotion, code: 'CYBER15', name: 'Cyber Monday')
 
     result = Promotion.search('Natal')
     assert_includes result, christmas
@@ -121,19 +76,8 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test '.search finds nothing' do
-    christmas = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 100,
-                                  expiration_date: '22/12/2033',
-                                  user: @user)
-    cyber_monday = Promotion.create!(name: 'Cyber Monday',
-                                     coupon_quantity: 100,
-                                     description: 'Promoção de Cyber Monday',
-                                     code: 'CYBER15', discount_rate: 15,
-                                     expiration_date: '22/12/2033',
-                                     user: @user)
+    christmas = Fabricate(:promotion, code: 'NATAL10', name: 'Natal')
+    cyber_monday = Fabricate(:promotion, code: 'CYBER15', name: 'Cyber Monday')
 
 
     result = Promotion.search('carnaval')

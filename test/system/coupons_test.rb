@@ -2,14 +2,8 @@ require 'application_system_test_case'
 
 class CouponsTest < ApplicationSystemTestCase
   test 'disable a coupon' do
-    user = login_user
-    promotion = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 3,
-                                  expiration_date: '22/12/2033',
-                                  user: user)
+    login_user
+    promotion = Fabricate(:promotion)
 
     promotion.generate_coupons!
     coupon = promotion.coupons[0]
@@ -29,14 +23,8 @@ class CouponsTest < ApplicationSystemTestCase
 
 
   test 'enable a disabled coupon' do
-    user = login_user
-    promotion = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 3,
-                                  expiration_date: '22/12/2033',
-                                  user: user)
+    login_user
+    promotion = Fabricate(:promotion, code: 'NATAL10')
 
     promotion.generate_coupons!
     coupon = promotion.coupons[0]
@@ -84,17 +72,8 @@ class CouponsTest < ApplicationSystemTestCase
   end
 
   test 'search a coupon without success' do
-    user = login_user
-    promotion = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 3,
-                                  expiration_date: '22/12/2033',
-                                  user: user)
-
-    promotion.generate_coupons!
-    coupon = promotion.coupons[1]
+    login_user
+    coupon = Fabricate(:coupon)
 
     visit root_path
     click_on 'Buscar Cupom'
@@ -106,17 +85,7 @@ class CouponsTest < ApplicationSystemTestCase
   end
 
   test 'cannot see a coupon without login' do
-    user = User.create!(email: 'meu.email@iugu.com.br', password: '123456')
-    promotion = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 3,
-                                  expiration_date: '22/12/2033',
-                                  user: user)
-
-    promotion.generate_coupons!
-    coupon = promotion.coupons[1]
+    coupon = Fabricate(:coupon)
 
     visit coupon_path(coupon)
 

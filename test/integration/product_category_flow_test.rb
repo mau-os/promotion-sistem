@@ -13,8 +13,7 @@ class ProductCategoryFlowTest < ActionDispatch::IntegrationTest
   end
 
   test 'cannot edit a product category without login' do
-    product_category = ProductCategory.create!(name: 'Produto AntiFraude',
-                                               code: 'ANTIFRA')
+    product_category = Fabricate(:product_category)
     
     patch product_category_path(product_category), params: {
       product_category: {
@@ -27,8 +26,7 @@ class ProductCategoryFlowTest < ActionDispatch::IntegrationTest
   end
 
   test 'cannot delete a product category without login' do
-    product_category = ProductCategory.create!(name: 'Produto AntiFraude',
-                                               code: 'ANTIFRA')
+    product_category = Fabricate(:product_category)
     
     delete product_category_path(product_category)
 

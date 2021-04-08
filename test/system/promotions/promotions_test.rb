@@ -53,10 +53,8 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'view promotions and return to home page' do
-    user = login_user
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: user)
+    login_user
+    Fabricate(:promotion)
 
     visit root_path
     click_on 'Promoções'
@@ -66,10 +64,8 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'view details and return to promotions page' do
-    user = login_user
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: user)
+    login_user
+    Fabricate(:promotion)
 
     visit root_path
     click_on 'Promoções'
@@ -113,10 +109,8 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'create and code must be unique' do
-    user = login_user
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: user)
+    login_user
+    Fabricate(:promotion, code: 'NATAL10')
 
     
     visit root_path
@@ -129,18 +123,9 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'generate coupons for a promotion' do
-    user = login_user
-    promotion = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 100,
-                                  expiration_date: '22/12/2033',
-                                  user: user)
-    
-    promotion.create_promotion_approval(
-      user: User.create!(email: 'john.mail@iugu.com.br', password: '123456')
-    )
+    login_user
+    promotion = Fabricate(:promotion, code: 'NATAL10', coupon_quantity: 100)
+    promotion_approval = Fabricate(:promotion_approval, promotion: promotion)
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
 
@@ -154,14 +139,8 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'edit a promotion' do
-    user = login_user
-    promotion = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 100,
-                                  expiration_date: '22/12/2033',
-                                  user: user)
+    login_user
+    promotion = Fabricate(:promotion)
     
     visit promotions_path
     within "tr#promotion-#{promotion.code.parameterize}" do
@@ -186,22 +165,10 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'edit a promotion with coupons' do
-    user = login_user
-    promotion = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 100,
-                                  expiration_date: '22/12/2033',
-                                  user: user)
-    promotion.create_promotion_approval(
-      user: User.create!(email: 'john.mail@iugu.com.br', password: '123456')
-    )
+    login_user
+    coupon = Fabricate(:coupon)
 
-    visit promotion_path(promotion)
-    click_on 'Gerar cupons'
-
-    visit edit_promotion_path(promotion)
+    visit edit_promotion_path(coupon.promotion)
 
     assert_no_field 'Código'
     assert_no_field 'Desconto'
@@ -210,14 +177,8 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'delete a promotion' do
-    user = login_user
-    promotion = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 100,
-                                  expiration_date: '22/12/2033',
-                                  user: user)
+    login_user
+    promotion = Fabricate(:promotion)
     
     visit promotions_path
     within "tr#promotion-#{promotion.code.parameterize}" do
@@ -225,63 +186,5 @@ class PromotionsTest < ApplicationSystemTestCase
     end
     accept_prompt    
     assert_text 'Nenhuma promoção cadastrada'
-  end
-
-  test 'search promotion by term and finds results' do
-    user = login_user
-    christmas = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 100,
-                                  expiration_date: '22/12/2033',
-                                  user: user)
-    christmassy = Promotion.create!(name: 'Natalina',
-                                    description: 'Promoção de Natal',
-                                    code: 'NATAL11',
-                                    discount_rate: 10,
-                                    coupon_quantity: 100,
-                                    expiration_date: '22/12/2033',
-                                    user: user)
-    cyber_monday = Promotion.create!(name: 'Cyber Monday',
-                                    coupon_quantity: 100,
-                                    description: 'Promoção de Cyber Monday',
-                                    code: 'CYBER15', discount_rate: 15,
-                                    expiration_date: '22/12/2033',
-                                    user: user)
-    visit root_path
-    click_on 'Promoções'
-    fill_in 'Busca', with: 'natal'
-    click_on 'Buscar'
-
-    assert_text christmas.name
-    assert_text christmassy.name
-    refute_text cyber_monday.name
-  end
-
-  test 'search with no results' do
-    user = login_user
-    christmas = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 100,
-                                  expiration_date: '22/12/2033',
-                                  user: user)
-    christmassy = Promotion.create!(name: 'Natalina',
-                                    description: 'Promoção de Natal',
-                                    code: 'NATAL11',
-                                    discount_rate: 10,
-                                    coupon_quantity: 100,
-                                    expiration_date: '22/12/2033',
-                                    user: user)
-    visit root_path
-    click_on 'Promoções'
-    fill_in 'Busca', with: 'cyber'
-    click_on 'Buscar'
-
-    assert_text 'Não foram localizadas promoções para esta busca'
-    refute_text christmas.name
-    refute_text christmassy.name
   end
 end

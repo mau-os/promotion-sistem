@@ -36,7 +36,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'view product categories and return to home page' do
-    ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
+    Fabricate(:product_category)
 
     login_user
     visit root_path
@@ -97,7 +97,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'edit a product category' do
-    product_category = ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
+    product_category = Fabricate(:product_category)
 
     login_user
     visit product_categories_path
@@ -115,7 +115,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'delete a product category' do
-    product_category = ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
+    product_category = Fabricate(:product_category)
 
     login_user
     visit product_categories_path
@@ -133,14 +133,14 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'cannot see product categories without login' do
-    product_category = ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
+    product_category = Fabricate(:product_category)
 
     visit product_categories_path
     assert_current_path new_user_session_path
   end
 
   test 'cannot see a product category details without login' do
-    product_category = ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
+    product_category = Fabricate(:product_category)
 
     visit product_category_path(product_category)
     assert_current_path new_user_session_path
@@ -153,7 +153,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'cannot edit a product category without login' do
-    product_category = ProductCategory.create!(name: 'Eletrônico', code: 'ELECTRO')
+    product_category = Fabricate(:product_category)
 
     visit edit_product_category_path(product_category)
     assert_current_path new_user_session_path

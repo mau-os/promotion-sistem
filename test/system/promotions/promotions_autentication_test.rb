@@ -14,14 +14,7 @@ class PromotionsAutenticationTest < ApplicationSystemTestCase
   end
 
   test 'do not view promotions details without login' do
-    user = User.create!(email: 'meu.email@iugu.com.br', password: '123456')
-    promotion = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 100,
-                                  expiration_date: '22/12/2033',
-                                  user: user)
+    promotion = Fabricate(:promotion)
     visit promotion_path(promotion)
 
     assert_current_path new_user_session_path
@@ -34,14 +27,7 @@ class PromotionsAutenticationTest < ApplicationSystemTestCase
   end
 
   test 'can not edit promotions without login' do
-    user = User.create!(email: 'meu.email@iugu.com.br', password: '123456')
-    promotion = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10',
-                                  discount_rate: 10,
-                                  coupon_quantity: 100,
-                                  expiration_date: '22/12/2033',
-                                  user: user)
+    promotion = Fabricate(:promotion)
     visit edit_promotion_path(promotion)
 
     assert_current_path new_user_session_path
