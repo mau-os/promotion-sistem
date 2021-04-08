@@ -2,7 +2,7 @@ require 'application_system_test_case'
 
 class PromotionsSearchTest < ApplicationSystemTestCase
   test 'search promotion by term and finds results' do
-    user = login_user
+    login_user
     christmas = Fabricate(:promotion, code: 'NATAL10', name: 'Natal')
     christmassy = Fabricate(:promotion, code: 'NATAL11', name: 'Natalina')
     cyber_monday = Fabricate(:promotion, code: 'CYBER15', name: 'Cyber Monday')
@@ -17,7 +17,7 @@ class PromotionsSearchTest < ApplicationSystemTestCase
   end
 
   test 'search with no results' do
-    user = login_user
+    login_user
     christmas = Fabricate(:promotion, code: 'NATAL10', name: 'Natal')
     christmassy = Fabricate(:promotion, code: 'NATAL11', name: 'Natalina')
     visit root_path

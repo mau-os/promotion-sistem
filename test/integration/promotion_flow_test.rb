@@ -37,14 +37,14 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
 
   test 'cannot generate coupons without login' do
     promotion = Fabricate(:promotion)
-    
+
     post generate_coupons_promotion_path(promotion)
     assert_redirected_to new_user_session_path
   end
 
   test 'cannot edit promotions without login' do
     promotion = Fabricate(:promotion)
-    
+
     patch promotion_path(promotion), params: {
       promotion: {
         name: 'Natal alterado',
@@ -60,14 +60,14 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
 
   test 'cannot delete a promotion without login' do
     promotion = Fabricate(:promotion)
-    
+
     delete promotion_path(promotion)
     assert_redirected_to new_user_session_path
   end
 
   test 'cannot approve without login' do
     promotion = Fabricate(:promotion)
-    
+
     post approve_promotion_path(promotion)
     assert_redirected_to new_user_session_path
   end
@@ -75,10 +75,10 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
   test 'cannot approve if owner' do
     user = login_user
     promotion = Fabricate(:promotion, user: user)
-    
+
     post approve_promotion_path(promotion)
     assert_redirected_to promotion_path(promotion)
-    refute promotion.reload.approved?
+    assert_not promotion.reload.approved?
     assert_equal 'Ação não permitida', flash[:alert]
   end
 end

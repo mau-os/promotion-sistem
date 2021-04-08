@@ -15,7 +15,7 @@ class ProductCategoryApiTest < ActionDispatch::IntegrationTest
     post '/api/v1/product_categories', as: :json, params: {
       product_category: {
         name: 'Produto Perecivel',
-        code: 'PRODPERE',
+        code: 'PRODPERE'
       }
     }
 
@@ -28,11 +28,11 @@ class ProductCategoryApiTest < ActionDispatch::IntegrationTest
   test 'update a product category' do
     product_category = Fabricate(:product_category)
     patch "/api/v1/product_categories/#{product_category.code}",
-            as: :json,
-            params: {
-              code: 'FRAC1',
-              name: 'Fracionado'
-            }
+          as: :json,
+          params: {
+            code: 'FRAC1',
+            name: 'Fracionado'
+          }
 
     assert_response :success
     body = JSON.parse(response.body, symbolize_names: true)
@@ -57,5 +57,20 @@ class ProductCategoryApiTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
     body = JSON.parse(response.body, symbolize_names: true)
     assert_includes body[:errors], 'Código não pode ficar em branco'
+  end
+
+  test 'can not duplicate code and name' do
+    product_category = Fabricate(:product_category)
+    post '/api/v1/product_categories', as: :json, params: {
+      product_category: {
+        name: product_category.name,
+        code: product_category.code
+      }
+    }
+
+    assert_response :unprocessable_entity
+    body = JSON.parse(response.body, symbolize_names: true)
+    assert_includes body[:errors], 'Código já está em uso'
+    assert_includes body[:errors], 'Nome já está em uso'
   end
 end

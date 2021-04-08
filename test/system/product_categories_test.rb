@@ -122,7 +122,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     within "tr#product-category-#{product_category.code.parameterize}" do
       click_on 'Deletar'
     end
-    accept_prompt    
+    accept_prompt
     assert_text 'Nenhuma categoria de produto cadastrada'
   end
 
@@ -133,7 +133,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
   end
 
   test 'cannot see product categories without login' do
-    product_category = Fabricate(:product_category)
+    Fabricate(:product_category)
 
     visit product_categories_path
     assert_current_path new_user_session_path
@@ -158,5 +158,4 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     visit edit_product_category_path(product_category)
     assert_current_path new_user_session_path
   end
-
 end

@@ -7,8 +7,7 @@ class PromotionsController < ApplicationController
     @promotions = Promotion.all
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @promotion = Promotion.new
@@ -57,19 +56,18 @@ class PromotionsController < ApplicationController
 
   private
 
-    def set_promotion
-      @promotion = Promotion.find(params[:id])
-    end
+  def set_promotion
+    @promotion = Promotion.find(params[:id])
+  end
 
-    def promotion_params
-      params
-        .require(:promotion)
-        .permit(:name, :description, :expiration_date,
+  def promotion_params
+    params
+      .require(:promotion)
+      .permit(:name, :description, :expiration_date,
               :code, :discount_rate, :coupon_quantity)
-    end
+  end
 
-    def can_be_approved
-      redirect_to @promotion,
-      alert: 'Ação não permitida' unless @promotion.can_approve?(current_user)
-    end
+  def can_be_approved
+    redirect_to @promotion, alert: 'Ação não permitida' unless @promotion.can_approve?(current_user)
+  end
 end

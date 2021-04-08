@@ -7,7 +7,7 @@ class CouponsTest < ApplicationSystemTestCase
 
     promotion.generate_coupons!
     coupon = promotion.coupons[0]
-    
+
     visit promotion_path(promotion)
     within "div#coupon-#{coupon.code.parameterize}" do
       click_on 'Desabilitar'
@@ -21,7 +21,6 @@ class CouponsTest < ApplicationSystemTestCase
     assert_link 'Desabilitar', count: promotion.coupon_quantity - 1
   end
 
-
   test 'enable a disabled coupon' do
     login_user
     promotion = Fabricate(:promotion, code: 'NATAL10')
@@ -30,14 +29,13 @@ class CouponsTest < ApplicationSystemTestCase
     coupon = promotion.coupons[0]
     coupon.disabled!
 
-    
     visit promotion_path(promotion)
     within "div#coupon-#{coupon.code.parameterize}" do
       click_on 'Ativar'
     end
 
     assert_text "Cupom #{coupon.code} ativado com sucesso"
-    assert_text "#{coupon.code}"
+    assert_text coupon.code.to_s
     assert_no_text "#{coupon.code} (desabilitado)"
     within "div#coupon-#{coupon.code.parameterize}" do
       assert_no_link 'Ativar'
@@ -73,7 +71,7 @@ class CouponsTest < ApplicationSystemTestCase
 
   test 'search a coupon without success' do
     login_user
-    coupon = Fabricate(:coupon)
+    Fabricate(:coupon)
 
     visit root_path
     click_on 'Buscar Cupom'

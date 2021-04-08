@@ -14,7 +14,6 @@ class PromotionsApprovalsTest < ApplicationSystemTestCase
     assert_text "Aprovada por: #{approver.email}"
     assert_link 'Gerar cupons'
     refute_link 'Aprovar'
-      
   end
 
   test 'user can not approve his promotion' do

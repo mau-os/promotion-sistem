@@ -112,7 +112,6 @@ class PromotionsTest < ApplicationSystemTestCase
     login_user
     Fabricate(:promotion, code: 'NATAL10')
 
-    
     visit root_path
     click_on 'Promoções'
     click_on 'Registrar uma promoção'
@@ -125,7 +124,7 @@ class PromotionsTest < ApplicationSystemTestCase
   test 'generate coupons for a promotion' do
     login_user
     promotion = Fabricate(:promotion, code: 'NATAL10', coupon_quantity: 100)
-    promotion_approval = Fabricate(:promotion_approval, promotion: promotion)
+    Fabricate(:promotion_approval, promotion: promotion)
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
 
@@ -141,7 +140,7 @@ class PromotionsTest < ApplicationSystemTestCase
   test 'edit a promotion' do
     login_user
     promotion = Fabricate(:promotion)
-    
+
     visit promotions_path
     within "tr#promotion-#{promotion.code.parameterize}" do
       click_on 'Editar'
@@ -179,12 +178,12 @@ class PromotionsTest < ApplicationSystemTestCase
   test 'delete a promotion' do
     login_user
     promotion = Fabricate(:promotion)
-    
+
     visit promotions_path
     within "tr#promotion-#{promotion.code.parameterize}" do
       click_on 'Deletar'
     end
-    accept_prompt    
+    accept_prompt
     assert_text 'Nenhuma promoção cadastrada'
   end
 end

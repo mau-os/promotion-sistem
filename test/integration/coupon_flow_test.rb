@@ -19,5 +19,5 @@ class CouponFlowTest < ActionDispatch::IntegrationTest
     get search_coupons_path, params: { code: coupon.code }
 
     assert_redirected_to new_user_session_path
-end
+  end
 end

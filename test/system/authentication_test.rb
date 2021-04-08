@@ -12,7 +12,7 @@ class Authentication < ApplicationSystemTestCase
     within 'form' do
       click_on 'Cadastrar'
     end
-    
+
     assert_text 'Boas vindas! Cadastrou e entrou com sucesso'
     assert_text 'meu.email@iugu.com.br'
     assert_link 'Sair'
@@ -28,7 +28,7 @@ class Authentication < ApplicationSystemTestCase
     within 'form' do
       click_on 'Cadastrar'
     end
-    
+
     assert_text 'Senha não pode ficar em branco'
     assert_text 'Email não pode ficar em branco'
   end
@@ -52,7 +52,7 @@ class Authentication < ApplicationSystemTestCase
   test 'user sign out' do
     login_user
 
-    visit root_path    
+    visit root_path
     click_on 'Sair'
 
     assert_current_path new_user_session_path
@@ -64,7 +64,6 @@ class Authentication < ApplicationSystemTestCase
   test 'user edit password' do
     user = User.create!(email: 'meu.email@iugu.com.br', password: 'password')
     token = user.send(:set_reset_password_token)
-
 
     visit edit_user_password_path(user, reset_password_token: token)
 

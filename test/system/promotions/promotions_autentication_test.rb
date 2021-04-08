@@ -9,7 +9,7 @@ class PromotionsAutenticationTest < ApplicationSystemTestCase
 
   test 'do not view promotions using route without login' do
     visit promotions_path
-    
+
     assert_current_path new_user_session_path
   end
 
@@ -22,7 +22,7 @@ class PromotionsAutenticationTest < ApplicationSystemTestCase
 
   test 'can not create a promotion without login' do
     visit new_promotion_path
-    
+
     assert_current_path new_user_session_path
   end
 
@@ -33,10 +33,9 @@ class PromotionsAutenticationTest < ApplicationSystemTestCase
     assert_current_path new_user_session_path
   end
 
-
   test 'can not search promotions without login' do
     visit search_promotions_path
-    
+
     assert_current_path new_user_session_path
   end
 end
