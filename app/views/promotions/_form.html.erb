@@ -31,5 +31,8 @@
     <%= f.label :expiration_date, class: 'form-label' %>
     <%= f.date_field :expiration_date, disabled: generated_coupons, class: 'form-control' %>
   </div>
+  <div class="mb-3">
+    <%= f.collection_check_boxes :product_category_ids, ProductCategory.all, :id, :name %>
+  </div>
   <%= f.submit class: 'btn btn-primary' %>
 <% end %>

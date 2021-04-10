@@ -1,6 +1,8 @@
 class Promotion < ApplicationRecord
   belongs_to :user
   has_many :coupons, dependent: :restrict_with_error
+  has_many :promotion_product_categories, dependent: :restrict_with_error
+  has_many :product_categories, through: :promotion_product_categories
   has_one :promotion_approval, dependent: :destroy
   has_one :approver, through: :promotion_approval, source: :user
 
@@ -32,5 +34,13 @@ class Promotion < ApplicationRecord
 
   def can_approve?(current_user)
     user != current_user
+  end
+
+  def generate_promotion_product_categories!(product_categories_ids)
+    promotion_product_categories.destroy_all
+    product_categories_ids.each do |product_category_id|
+      product_category = ProductCategory.find(product_category_id) if product_category_id.present?
+      PromotionProductCategory.create!(product_category: product_category, promotion: self) if product_category.present?
+    end
   end
 end

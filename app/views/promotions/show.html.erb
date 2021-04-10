@@ -23,6 +23,17 @@
   <%= link_to 'Aprovar', approve_promotion_path(@promotion), method: :post, data: { confirm: 'Tem certeza? Essa operação não pode ser desfeita' }%>
 <% end %>
 
+<% if @promotion.promotion_product_categories.any? %>
+  <div class="container">
+    <strong>Permitido para as Categorias de Produtos:</strong>
+    <ul>
+      <% @promotion.promotion_product_categories.each do |promotion_product_category| %>
+        <li><%= promotion_product_category.product_category.name %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <% @promotion.coupons.each do |coupon| %>
   <div id="coupon-<%= coupon.code.parameterize %>">
     <p>

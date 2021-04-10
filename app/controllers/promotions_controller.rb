@@ -24,10 +24,12 @@ class PromotionsController < ApplicationController
 
   def edit
     @generated_coupons = @promotion.coupons?
+    @promotion_product_categories = @promotion.promotion_product_categories.all
   end
 
   def update
     @promotion.update(promotion_params)
+    @promotion.generate_promotion_product_categories!(promotion_product_categories_params)
     redirect_to promotions_path
   end
 
@@ -65,6 +67,12 @@ class PromotionsController < ApplicationController
       .require(:promotion)
       .permit(:name, :description, :expiration_date,
               :code, :discount_rate, :coupon_quantity)
+  end
+
+  def promotion_product_categories_params
+    params
+      .require(:promotion)
+      .require(:product_category_ids)
   end
 
   def can_be_approved
