@@ -10,7 +10,8 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
         code: 'NATAL10',
         discount_rate: 15,
         coupon_quantity: 5,
-        expiration_date: '22/12/2033'
+        expiration_date: '22/12/2033',
+        product_category_ids: []
       }
     }
 

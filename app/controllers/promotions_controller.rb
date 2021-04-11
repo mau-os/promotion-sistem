@@ -16,6 +16,7 @@ class PromotionsController < ApplicationController
   def create
     @promotion = current_user.promotions.new(promotion_params)
     if @promotion.save
+      @promotion.generate_promotion_product_categories!(promotion_product_categories_params)
       redirect_to @promotion
     else
       render :new
